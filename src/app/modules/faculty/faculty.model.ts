@@ -1,8 +1,6 @@
 import { Schema, model } from 'mongoose';
 import { FacultyModel, TFaculty, TUserName } from './faculty.interface';
 import { BloodGroup, Gender } from './faculty.constant';
-// import { BloodGroup, Gender } from './faculty.constant';
-// import { FacultyModel, TFaculty, TUserName } from './faculty.interface';
 
 const userNameSchema = new Schema<TUserName>({
   firstName: {
@@ -97,10 +95,31 @@ const facultySchema = new Schema<TFaculty, FacultyModel>(
   },
 );
 
-facultySchema.virtual('fullName').get(function() {
-    const {firstName, middleName, lastName} = this.name;
-    return `${firstName} ${middleName} ${lastName}`
-})
+facultySchema.virtual('fullName').get(function () {
+  const { firstName, middleName, lastName } = this.name;
+  return `${firstName} ${middleName} ${lastName}`;
+});
 
+// filter out deleted documents
+facultySchema.pre('find', function (next) {
+  this.find({ isDeleted: { $ne: true } });
+  next();
+});
 
-export const Faculty = model<TFaculty>('Faculty', facultySchema)
+facultySchema.pre('findOne', function (next) {
+  this.find({ isDeleted: { $ne: true } });
+  next();
+});
+
+facultySchema.pre('aggregate', function (next) {
+  this.pipeline().unshift({ $match: { isDeleted: { $ne: true } } });
+  next();
+});
+
+//checking if user is already exist!
+facultySchema.statics.isUserExists = async function (id: string) {
+  const existingUser = await Faculty.findOne({ id });
+  return existingUser;
+};
+
+export const Faculty = model<TFaculty, FacultyModel>('Faculty', facultySchema);
