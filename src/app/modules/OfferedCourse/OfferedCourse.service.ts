@@ -7,7 +7,7 @@ import { AcademicFaculty } from '../academicFaculty/academicFaculty.model';
 import { AcademicDepartment } from '../academicDepartment/academicDepartment.model';
 import { Course } from '../Course/course.model';
 import { Faculty } from '../faculty/faculty.model';
-import { hasTimeConflict } from './offeredCourse.utils';
+import { hasTimeConflict } from './OfferedCourse.utils';
 
 const createOfferedCourseIntoDB = async (payload: TOfferedCourse) => {
   const {
