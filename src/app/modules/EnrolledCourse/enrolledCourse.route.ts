@@ -15,4 +15,9 @@ router.post(
   EnrolledCourseController.createEnrolledCourse,
 );
 
+router.get(
+  '/',
+  EnrolledCourseController.getAllEnrolledCourse,
+);
+
 export const EnrolledCourseRoutes = router;

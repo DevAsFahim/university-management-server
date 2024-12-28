@@ -163,7 +163,13 @@ const updateOfferedCourseIntoDB = async (
   return result;
 };
 
+const getAllOfferedCourseFromDB = async () => {
+  const result = await OfferedCourse.find();
+  return result;
+};
+
 export const OfferedCourseServices = {
   createOfferedCourseIntoDB,
   updateOfferedCourseIntoDB,
+  getAllOfferedCourseFromDB,
 };
