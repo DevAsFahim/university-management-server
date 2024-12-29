@@ -6,7 +6,10 @@ import { EnrolledCourseServices } from './enrolledCourse.service';
 const createEnrolledCourse = catchAsync(async (req, res) => {
   const userId = req.user.userId;
 
-  const result = await EnrolledCourseServices.createEnrolledCourseIntoDB(userId, req.body);
+  const result = await EnrolledCourseServices.createEnrolledCourseIntoDB(
+    userId,
+    req.body,
+  );
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -17,7 +20,6 @@ const createEnrolledCourse = catchAsync(async (req, res) => {
 });
 
 const getAllEnrolledCourse = catchAsync(async (req, res) => {
-
   const result = await EnrolledCourseServices.getAllEnrolledCourseFromDB();
 
   sendResponse(res, {
@@ -28,7 +30,24 @@ const getAllEnrolledCourse = catchAsync(async (req, res) => {
   });
 });
 
+const updateEnrolledCourseMarks = catchAsync(async (req, res) => {
+  const facultyId = req.user.userId;
+
+  const result = await EnrolledCourseServices.updateEnrolledCourseMarksIntoDB(
+    facultyId,
+    req.body,
+  );
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Marks is updated successfully!',
+    data: result,
+  });
+});
+
 export const EnrolledCourseController = {
   createEnrolledCourse,
   getAllEnrolledCourse,
+  updateEnrolledCourseMarks,
 };
