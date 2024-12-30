@@ -6,7 +6,7 @@ import fs from 'fs';
 export const sendImageToCloudinary = async (
   imageName: string,
   path: string,
-) => {
+): Promise<Record<string, unknown>> => {
   // Configuration
   cloudinary.config({
     cloud_name: config.cloudinary_cloud_name,
@@ -33,7 +33,7 @@ export const sendImageToCloudinary = async (
     }
   });
 
-  console.log(uploadResult)
+  console.log(uploadResult);
 
   return uploadResult;
 };
