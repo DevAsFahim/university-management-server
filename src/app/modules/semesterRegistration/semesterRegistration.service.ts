@@ -14,7 +14,10 @@ const createSemesterRegistrationIntoDB = async (
   // check if any registered semester is already 'UPCOMING'/'ONGOING'
   const isThereAnyUpcomingOrOngoingSemester =
     await SemesterRegistration.findOne({
-      $or: [{ status: RegistrationStatus.UPCOMING }, { status: RegistrationStatus.ONGOING }],
+      $or: [
+        { status: RegistrationStatus.UPCOMING },
+        { status: RegistrationStatus.ONGOING },
+      ],
     });
 
   if (isThereAnyUpcomingOrOngoingSemester) {
@@ -64,7 +67,9 @@ const getAllSemesterRegistrationsFromDB = async (
     .fields();
 
   const result = await semesterRegistrationQuery.modelQuery;
-  return result;
+  const meta = await semesterRegistrationQuery.countTotal();
+
+  return { meta, result };
 };
 
 const getSingleSemesterRegistrationFromDB = async (id: string) => {
@@ -95,14 +100,20 @@ const updateSemesterRegistrationIntoDB = async (
   }
 
   // UPCOMING --> ONGOING --> ENDED
-  if (currentSemesterStatus === RegistrationStatus.UPCOMING && requestedStatus === RegistrationStatus.ENDED) {
+  if (
+    currentSemesterStatus === RegistrationStatus.UPCOMING &&
+    requestedStatus === RegistrationStatus.ENDED
+  ) {
     throw new AppError(
       httpStatus.BAD_REQUEST,
       `you can not directly change status from ${currentSemesterStatus} to ${requestedStatus}`,
     );
   }
 
-  if (currentSemesterStatus === RegistrationStatus.ONGOING && requestedStatus === RegistrationStatus.UPCOMING) {
+  if (
+    currentSemesterStatus === RegistrationStatus.ONGOING &&
+    requestedStatus === RegistrationStatus.UPCOMING
+  ) {
     throw new AppError(
       httpStatus.BAD_REQUEST,
       `you can not directly change status from ${currentSemesterStatus} to ${requestedStatus}`,

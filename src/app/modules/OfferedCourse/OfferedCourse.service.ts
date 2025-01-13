@@ -173,7 +173,6 @@ const getAllOfferedCourseFromDB = async (query: Record<string, unknown>) => {
     .fields();
 
   const result = await offeredCourseQuery.modelQuery;
-
   const meta = await offeredCourseQuery.countTotal();
 
   return { meta, result };
