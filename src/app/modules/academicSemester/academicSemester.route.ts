@@ -21,21 +21,15 @@ route.get(
   auth(
     USER_ROLE.superAdmin,
     USER_ROLE.admin,
-    USER_ROLE.student,
-    USER_ROLE.faculty,
+    // USER_ROLE.student,
+    // USER_ROLE.faculty,
   ),
   AcademicSemesterControllers.getAllAcademicSemesters,
 );
-route.get(
-  '/:courseId',
-  AcademicSemesterControllers.getSingleAcademicSemesters,
-);
+route.get('/:courseId', AcademicSemesterControllers.getSingleAcademicSemesters);
 route.patch(
   '/:courseId',
-  auth(
-    USER_ROLE.superAdmin,
-    USER_ROLE.admin,
-  ),
+  auth(USER_ROLE.superAdmin, USER_ROLE.admin),
   validateRequest(
     AcademicSemesterValidations.updateAcademicSemesterValidationSchema,
   ),
